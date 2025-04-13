@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPU Scheduling</title>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Internal Styling -->
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .jumbotron {
+      margin: 2% auto;
+      background-color: #111827;
+      padding: 30px 20px;
+      width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+  
+    .display-4 {
+      color: #7dd3fc;
+      text-align: center;
+      font-weight: 600;
+    }
+  
+    .lead {
+      font-size: 1.1rem;
+      color: #d1d5db;
+      margin-top: 15px;
+    }
+  
+    .my-4 {
+      border-color: #7dd3fc;
+    }
+  
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      background-color: #1f2937;
+      padding: 20px;
+      border-radius: 12px;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      color: #f0f0f0;
+    }
+  
+    th, td {
+      border: 1px solid #4b5563;
+      padding: 10px;
+      text-align: center;
+    }
+  
+    th {
+      background-color: #111827;
+      color: #7dd3fc;
+    }
+  
+    input[type="text"] {
+      text-align: center;
+      color: #111827;
+      width: 100%;
+      padding: 5px;
+      border-radius: 6px;
+      border: none;
+    }
+  
+    input[type="button"] {
+      background-color: #2d3748;
+      color: #f0f0f0;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      margin-right: 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+  
+    input[type="button"]:hover {
+      background-color: #4b5563;
+      color: #ffffff;
+    }
+  
+    .controller {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  
+    #quantumParagraph {
+      margin-top: 30px;
+      color: #cbd5e1;
+    }
+  
+    .zaz {
+      color: #f0f0f0;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  
+    h2 {
+      font-size: 1.25rem;
+      color: #7dd3fc;
+    }
+  
+    h4 {
+      color: #7dd3fc;
+      font-size: 1.25rem;
+    }
+  
+    .priority-only {
+      display: table-cell;
+    }
+  
+    @media (max-width: 768px) {
+      .controller {
+        flex-direction: column;
+        align-items: center;
+      }
+  
+      .jumbotron,
+      .container {
+        width: 95%;
+      }
+  
+      input[type="button"] {
+        width: 100%;
+      }
+    }
+  </style>
+  
+</head>
+
+<body>
+
+  <div class="jumbotron">
+    <h1 class="display-4">Process Scheduling Algorithms</h1>
+    <hr class="my-4" />
+    <p class="lead">
+      Process scheduling algorithms manage the order in which tasks are executed on a CPU to optimize resource utilization and system performance. We have the following algorithms for task scheduling.<br />Choose any of the following:
+    </p>
+    <form id="algorithm">
+      <input type="radio" name="algorithm" value="fcfs" checked class="heading" /> FCFS (First Come First Serve)<br />
+      <input type="radio" name="algorithm" value="sjf" class="heading" /> SJF (Shortest Job First)<br />
+      <input type="radio" name="algorithm" value="robin" class="heading" /> Round Robin Scheduling<br />
+      <input type="radio" name="algorithm" value="priority" class="heading" /> Priority based scheduling (Higher number = higher priority)<br />
+    </form>
+  </div>
+
+  <div class="container">
+    <table id="inputTable">
+      <tr>
+        <th>Process</th>
+        <th>Arrival Time</th>
+        <th>Burst/CPU Time</th>
+        <th class="servtime">Service Time</th>
+        <th class="priority-only">Priority</th>
+      </tr>
+      <tr>
+        <td>P0</td>
+        <td>0</td>
+        <td><input class="initial exectime" type="text" value="5" /></td>
+        <td class="servtime"></td>
+        <td class="priority-only"><input type="text" /></td>
+      </tr>
+      <tr>
+        <td>P1</td>
+        <td>1</td>
+        <td><input class="initial exectime" type="text" value="3" /></td>
+        <td class="servtime"></td>
+        <td class="priority-only"><input type="text" /></td>
+      </tr>
+    </table>
+
+    <p id="quantumParagraph">
+      Time Quantum: <input style="width: 50px;" id="quantum" type="text" value="3" />
+    </p>
+    <input type="button" value="Go" onclick="draw();" />
+
+    <div class="controller">
+      <input id="minus" type="button" value="-" onclick="deleteRow();" />
+      <input type="button" value="+" onclick="addRow();" />
+    </div>
+
+    <br /><br />
+    <fresh></fresh>
+    <br /><br />
+    <p class="zaz">
+      Total Completion Time: <strong id="timer"></strong> seconds
+    </p>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+
+</html>

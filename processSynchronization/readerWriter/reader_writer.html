@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reader-Writer Problem Simulation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #1e1e2f;
+      color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px 30px;
+      background-color: #111827;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #7dd3fc;
+      margin-bottom: 30px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #b214f0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #f43f5e;
+      transform: translateY(-2px);
+    }
+
+    #output {
+      background-color: #1f2937;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 25px 15px;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Reader-Writer Problem Simulation</h1>
+    <div class="btn-group">
+      <button onclick="startReading()">Start Reading</button>
+      <button onclick="stopReading()">Stop Reading</button>
+      <button onclick="startWriting()">Start Writing</button>
+      <button onclick="stopWriting()">Stop Writing</button>
+    </div>
+    <div id="output">Simulation output will appear here...</div>
+  </div>
+
+  <script>
+    let readersCount = 0;
+    let writersCount = 0;
+    let reading = false;
+    let writing = false;
+
+    function startReading() {
+      if (!writing) {
+        readersCount++;
+        reading = true;
+        updateOutput(`📖 Reader ${readersCount} started reading.`);
+      } else {
+        updateOutput(`❌ Reader denied. Writer is writing.`);
+      }
+    }
+
+    function stopReading() {
+      if (reading && readersCount > 0) {
+        updateOutput(`✅ Reader ${readersCount} stopped reading.`);
+        readersCount--;
+        if (readersCount === 0) reading = false;
+      } else {
+        updateOutput(`⚠️ No readers are currently reading.`);
+      }
+    }
+
+    function startWriting() {
+      if (reading || writing) {
+        updateOutput(`❌ Writer denied. Readers or a writer already active.`);
+      } else {
+        writersCount++;
+        writing = true;
+        updateOutput(`✍️ Writer ${writersCount} started writing.`);
+      }
+    }
+
+    function stopWriting() {
+      if (writing) {
+        updateOutput(`✅ Writer ${writersCount} stopped writing.`);
+        writing = false;
+        writersCount--;
+      } else {
+        updateOutput(`⚠️ No writer is currently writing.`);
+      }
+    }
+
+    function updateOutput(message) {
+      const output = document.getElementById('output');
+      output.innerHTML += message + "<br>";
+      output.scrollTop = output.scrollHeight;
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadlock Detection</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../disc_scheduling/css/disc_scheduling.css">
+    <link rel="stylesheet" href="css/deadlock_detection.css">
+  
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: #f0f0f0;
+        }
+
+        h1 {
+            color: #7dd3fc;
+        }
+
+        .jumbotron {
+            background-color: #2d2d42;
+            color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .form_group {
+            padding-left: 8%;
+            padding-right: 5%;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            color: #ccc;
+        }
+
+        .form-control, input[type="number"] {
+            background-color: #2d2d42;
+            color: #f0f0f0;
+            border-color: #7dd3fc;
+        }
+
+        .form-control:focus, input[type="number"]:focus {
+            background-color: #3b3b5c;
+            color: #f0f0f0;
+            border-color: #7dd3fc;
+        }
+
+        .btn-primary, .btn-success {
+            background-color: #7dd3fc;
+            border-color: #7dd3fc;
+        }
+
+        .btn-primary:hover, .btn-success:hover {
+            background-color: #4fa3c7;
+            border-color: #4fa3c7;
+        }
+
+        .row-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dead-lock-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .processes, .resources {
+            background-color: #2d2d42;
+            border-radius: 8px;
+            padding: 15px;
+            width: 48%;
+        }
+
+        .panel-footer {
+            background-color: #2d2d42;
+            color: #f0f0f0;
+            border-top: 1px solid #7dd3fc;
+        }
+
+        hr.my-4 {
+            border-color: #7dd3fc;
+        }
+
+        button {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <h1 class="display-4">Deadlock Detection</h1>
+        <hr class="my-4">
+        <p class="lead">
+            A deadlock occurs when two or more processes are blocked, waiting for each other to release the resources they need. To prevent deadlocks, the OS periodically checks the system for potential deadlock situations using techniques like Resource Allocation Graph (RAG) and Wait For Graph (WFG).
+        </p>
+    </div>
+    <div class="form_group" style="padding-left: 8%; padding-right: 5%;">
+        <div class="field">
+            <button id="cprocess" class="btn btn-primary" onclick="createProcess()">Create New Process</button>
+        </div>
+
+        <div class="row-container">
+            <div class="field">
+                <label for="pro">Process</label>
+                <input type="number" id="rpro" placeholder="1" style="width: 40px"/>
+            </div>
+    
+            <div class="field">
+                <label for="res">Resource</label>
+                <input type="number" id="rres" placeholder="1" style="width: 40px"/>
+            </div>
+    
+            <div class="field">
+                <button id="creqedge" class="btn btn-primary" onclick="createRequestEdge()">Create Request Edge</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form_group" style="padding-left: 5%; padding-right: 5%; margin-top: 5%;">
+        <div class="row-container">
+            <div class="field">
+                <label for="num_res">Number of Instance(s)</label>
+                <input type="number" id="num_res" placeholder="1"/>
+            </div>
+    
+            <div class="field">
+                <button id="cres" class="btn btn-primary" onclick="createResource()">Create New Resource</button>
+            </div>
+        </div>
+
+        <div class="row-container">
+            <div class="field">
+                <label for="pro">Resource</label>
+                <input type="number" id="ares" placeholder="1" style="width: 40px"/>
+            </div>
+    
+            <div class="field">
+                <label for="res">Process</label>
+                <input type="number" id="apro" placeholder="1" style="width: 40px"/>
+            </div>
+    
+            <div class="field">
+                <button id="calocedge" class="btn btn-primary" onclick="createAllocationEdge()">Create Allocation Edge</button>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="form_group" style="padding-left: 75%; padding-right: 5%;">
+        <div class="field">
+            <label for="start" id="result">&nbsp</label>
+            <button id="start" class="btn-success btn btn-primary" onclick="detectDeadlock()">Detect Deadlock</button>
+        </div>
+    </div>
+
+    <div class="dead-lock-container">
+        <div class="processes">
+            <h5>Processes</h5>
+            <!-- Process details will go here -->
+        </div>
+        <div class="resources">
+            <h5>Resources</h5>
+            <!-- Resource details will go here -->
+        </div>
+    </div>
+
+    <script src="../deadlock_detetction/js/deadlock_detection.js"></script>
+</body>
+
+</html>

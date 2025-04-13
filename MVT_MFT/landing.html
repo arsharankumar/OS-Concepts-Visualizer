@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>MFT_MVT</title>
+    <style>
+        body {
+            background-color: #1e1e2f; /* Dark background */
+            color: #f0f0f0; /* Light text color */
+            font-family: Arial, sans-serif; /* Font for better compatibility */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .button-container {
+            margin: 0 20px; /* Space between buttons */
+        }
+
+        .button {
+            padding: 20px 40px;
+            border: none;
+            border-radius: 8px;
+            background-color: #7dd3fc; /* Accent blue */
+            color: #1e1e2f; /* Dark text color */
+            font-size: 36px; /* Adjusted font size */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Smooth transition for hover */
+        }
+
+        .button:hover {
+            background-color: #4fa3c7; /* Darker blue on hover */
+        }
+
+        .button:focus {
+            outline: none; /* Remove focus outline */
+        }
+
+        h1 {
+            color: #7dd3fc; /* Accent blue */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>MFT & MVT</h1>
+    <div class="container">
+        <div class="button-container">
+            <button class="button button-1" onclick="window.location.href = 'MVT/mvt.html';">MVT</button>
+        </div>
+        <div class="button-container">
+            <button class="button button-2" onclick="window.location.href = 'MFT/mft.html';">MFT</button>
+        </div>
+    </div>    
+</body>
+</html>

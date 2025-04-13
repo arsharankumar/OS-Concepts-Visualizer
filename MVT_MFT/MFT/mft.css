@@ -1,0 +1,86 @@
+@keyframes slideInRight {
+  from {
+    transform: translateX(1000px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: #f0f0f0; /* Light gray background */
+}
+
+.block {
+  animation-name: slideInRight;
+  animation-duration: 1s;
+  animation-timing-function: ease-in;
+
+  display: inline-block;
+  border: 1px solid black;
+  text-align: center;
+  padding: 5px;
+  margin: 30px 0 30px 0;
+  width: 50px;
+  position: relative;
+}
+
+.block.empty {
+  background-color: #ccc; /* Light gray background */
+  color: #000; /* Black text color */
+}
+
+.block.process {
+  background-color: #ddd; /* Light gray background */
+  color: #000; /* Black text color */
+}
+
+.block-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #ddd; /* Light gray background */
+}
+
+.block-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* Bootstrap overrides */
+.jumbotron {
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 5%;
+  background-color: #ccc; /* Light gray background */
+  padding-bottom: 10px;
+  padding-top: 20px;
+}
+
+.display-4 {
+  color: #aeaeae; /* Dark gray text color */
+  text-align: center;
+  font-family: 'Poppins', sans-serif; /* Poppins font */
+}
+
+.my-4 {
+  border-color: #333; /* Dark gray border color */
+}
+
+.lead {
+  color: #c8c6c6; /* Dark gray text color */
+}

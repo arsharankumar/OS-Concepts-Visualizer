@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/MVT_MFT/css/base.css">
+    <link rel="stylesheet" href="mft.css">
+    <title>MFT</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1e1e2f; /* Dark background */
+            color: #f0f0f0; /* Light text color */
+            margin: 0;
+            padding: 0;
+        }
+
+        .jumbotron {
+            background-color: #333; /* Dark gray background for jumbotron */
+            color: #fff; /* White text color */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .display-4 {
+            color: #7dd3fc; /* Accent blue color for heading */
+        }
+
+        .my-4 {
+            border-color: #7dd3fc; /* Accent blue border color */
+        }
+
+        .lead {
+            color: #ccc; /* Light gray text color */
+        }
+
+        .container {
+            background-color: #2f2f42; /* Darker background for the container */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+            margin-top: 30px;
+        }
+
+        label {
+            color: #f0f0f0; /* Light gray label color */
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #7dd3fc; /* Accent blue border for input */
+            background-color: #2c2c3e; /* Dark input background */
+            color: #f0f0f0; /* White text in input */
+        }
+
+        button.btn.btn-primary {
+            background-color: #7dd3fc; /* Accent blue background */
+            border-color: #7dd3fc; /* Accent blue border */
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button.btn.btn-primary:hover {
+            background-color: #4fa3c7; /* Darker blue on hover */
+            border-color: #4fa3c7; /* Darker blue border color on hover */
+        }
+
+        .block {
+            display: inline-block;
+            border: 1px solid #7dd3fc; /* Accent blue border for blocks */
+            text-align: center;
+            padding: 5px;
+            margin: 30px 0 30px 0;
+            width: 50px;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .block.empty {
+            background-color: #2c2c3e; /* Dark background for empty blocks */
+            color: #fff; /* White text */
+        }
+
+        .block.process {
+            background-color: #444; /* Slightly lighter background for process blocks */
+            color: #fff; /* White text */
+        }
+
+        .block-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #444; /* Dark background for content */
+        }
+
+        .block-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff; /* White text for labels */
+        }
+
+        /* Animation for blocks */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(1000px);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .block {
+            animation-name: slideInRight;
+            animation-duration: 1s;
+            animation-timing-function: ease-in;
+        }
+
+        /* Bootstrap overrides */
+        .jumbotron {
+            margin-left: 1%;
+            margin-right: 1%;
+            margin-top: 5%;
+            background-color: #2f2f42; /* Darker background */
+            padding-bottom: 10px;
+            padding-top: 20px;
+            border-radius: 10px;
+        }
+
+        .my-4 {
+            border-color: #7dd3fc; /* Accent blue border */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <h1 class="display-4">Multi-Programming with Fixed Tasks (MFT)</h1>
+        <hr class="my-4">
+        <p class="lead">
+            Multi-programming with fixed partitioning is a contiguous memory management technique in which the main memory is divided into fixed-sized partitions, which can be of equal or unequal size. When we need to allocate a process's memory, we find a free partition that is large enough to hold the process.
+        </p>
+    </div>
+    <div class="container">
+        <form id="memoryAllocationForm">
+            <label for="totalMemorySize">Enter total memory size:</label>
+            <input type="number" id="totalMemorySize" required>
+            <br>
+            <label for="blockSize">Enter block size:</label>
+            <input type="number" id="blockSize" required>
+            <br>
+            <label for="numProcesses">Enter number of processes:</label>
+            <input type="number" id="numProcesses" required>
+            <br>
+            <div id="memoryRequirements"></div>
+            <br>
+            <button type="submit" class="btn btn-primary" onclick="document.getElementById('output').scrollIntoView();">Allocate Memory</button>
+        </form>
+        <div id="memoryBlocks"></div>
+        <div id="output"></div>
+    </div>
+    <script src="mft.js"></script>
+</body>
+
+</html>
