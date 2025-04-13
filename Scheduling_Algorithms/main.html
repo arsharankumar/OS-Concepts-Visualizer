@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPU Scheduling Visualizer</title>
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="jumbotron">
+    <h1 class="display-4">Process Scheduling Algorithms</h1>
+    <hr class="my-4" />
+    <p class="lead">
+      CPU scheduling algorithms are used by the operating system to decide the order in which processes access the CPU. The main goal is to maximize CPU utilization, throughput, and responsiveness while minimizing waiting time, turnaround time, and response time.<br />Some of the scheduling algorithms are listed below for simulation. Choose any of the following...
+    </p>
+    <form id="algorithm">
+      <div class="algorithm-option">
+        <input type="radio" id="fcfs" name="algorithm" value="fcfs" checked class="heading" />
+        <label for="fcfs">FCFS (First Come First Serve)</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="radio" id="sjf" name="algorithm" value="sjf" class="heading" />
+        <label for="sjf">SJF (Shortest Job First)</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="radio" id="srtf" name="algorithm" value="srtf" class="heading" />
+        <label for="srtf">SRTF (Shortest Remaining Time First)</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="radio" id="robin" name="algorithm" value="robin" class="heading" />
+        <label for="robin">Round Robin</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="radio" id="priority" name="algorithm" value="priority" class="heading" />
+        <label for="priority">Priority Non Preemptive (Higher number = higher priority)</label>
+      </div>
+      <div class="algorithm-option">
+        <input type="radio" id="priorityPreemptive" name="algorithm" value="priorityPreemptive" class="heading" />
+        <label for="priorityPreemptive">Priority Preemptive (Higher number = higher priority)</label>
+      </div>
+    </form>
+  </div>
+
+  <div class="algorithm-info-container">
+    <div class="algorithm-card" id="fcfs-card">
+      <h3>First Come First Serve (FCFS)</h3>
+      <p>Processes are executed in the order they arrive in the ready queue.</p>
+      
+      <h4>Advantages</h4>
+      <ul>
+        <li>Simple and easy to implement</li>
+        <li>No starvation - every process gets a chance to execute</li>
+        <li>Fair for processes that arrived first</li>
+      </ul>
+      
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Can lead to the "convoy effect" - short processes waiting behind long ones</li>
+        <li>Non-preemptive - once a process starts, it runs to completion</li>
+        <li>High average waiting time</li>
+      </ul>
+    </div>
+    
+    <div class="algorithm-card" id="sjf-card">
+      <h3>Shortest Job First (SJF)</h3>
+      <p>Selects the process with the smallest execution time to run next.</p>
+      
+      <h4>Advantages</h4>
+      <ul>
+        <li>Minimum average waiting time among non-preemptive algorithms</li>
+        <li>Good for batch systems where job lengths are known</li>
+        <li>Favors short jobs, which are typically more numerous</li>
+      </ul>
+      
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Difficult to predict execution time in advance</li>
+        <li>Long processes may suffer starvation</li>
+        <li>Non-preemptive - once a process starts, it runs to completion</li>
+      </ul>
+    </div>
+    
+    <div class="algorithm-card" id="srtf-card">
+      <h3>Shortest Remaining Time First (SRTF)</h3>
+      <p>The preemptive version of SJF. When a new process arrives, it compares the remaining time of the current process with the new process.</p>
+      
+      <h4>Advantages</h4>
+      <ul>
+        <li>Optimal average waiting time</li>
+        <li>Responsive to short processes</li>
+        <li>Prioritizes processes that can finish quickly</li>
+      </ul>
+      
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Difficult to predict remaining execution time</li>
+        <li>High overhead due to frequent context switching</li>
+        <li>Long processes may suffer starvation</li>
+      </ul>
+    </div>
+    
+    <div class="algorithm-card" id="robin-card">
+      <h3>Round Robin</h3>
+      <p>Each process gets a small unit of CPU time (time quantum), and after this time has elapsed, the process is preempted and added to the end of the ready queue.</p>
+      
+      <h4>Advantages</h4>
+      <ul>
+        <li>Fair allocation of CPU time to all processes</li>
+        <li>No starvation - every process gets a chance to execute</li>
+        <li>Responsive for short processes</li>
+      </ul>
+      
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Higher average waiting time than SJF</li>
+        <li>Performance depends heavily on time quantum size</li>
+        <li>Too small quantum leads to high context switching overhead</li>
+        <li>Too large quantum degrades to FCFS</li>
+      </ul>
+    </div>
+    
+    <div class="algorithm-card" id="priority-card">
+      <h3>Priority (Non-Preemptive)</h3>
+      <p>Each process is assigned a priority and the process with the highest priority runs first.</p>
+      
+      <h4>Advantages</h4>
+      <ul>
+        <li>Supports prioritization of critical tasks</li>
+        <li>Flexible - priority can be assigned based on various factors</li>
+        <li>Can optimize for system goals (e.g., I/O-bound vs CPU-bound)</li>
+      </ul>
+      
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Lower priority processes may suffer starvation</li>
+        <li>Priority inversion problem if not handled</li>
+        <li>Non-preemptive - once a process starts, it runs to completion</li>
+        <li>Requires additional mechanism for priority assignment</li>
+      </ul>
+    </div>
+    
+    <div class="algorithm-card" id="priorityPreemptive-card">
+      <h3>Priority (Preemptive)</h3>
+      <p>Each process is assigned a priority, and if a higher priority process arrives, the current process is preempted.</p>
+      
+      <h4>Advantages</h4>
+      <ul>
+        <li>More responsive to high priority processes</li>
+        <li>Better for real-time systems</li>
+        <li>Ensures critical tasks are handled promptly</li>
+        <li>Flexible priority assignment</li>
+      </ul>
+      
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Lower priority processes may suffer starvation</li>
+        <li>Priority inversion problem if not handled</li>
+        <li>High overhead due to potential context switching</li>
+        <li>Complex implementation with aging to prevent starvation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="input-section">
+      <h3>Process Configuration</h3>
+      <table id="inputTable">
+        <tr>
+          <th>Process</th>
+          <th>Arrival Time</th>
+          <th>Burst/CPU Time</th>
+          <th class="priority-only">Priority</th>
+        </tr>
+        <tr>
+          <td>P0</td>
+          <td><input class="initial arrivaltime" type="text" value="0" /></td>
+          <td><input class="initial exectime" type="text" value="5" /></td>
+          <td class="priority-only"><input type="text" value="1" /></td>
+        </tr>
+        <tr>
+          <td>P1</td>
+          <td><input class="initial arrivaltime" type="text" value="1" /></td>
+          <td><input class="initial exectime" type="text" value="3" /></td>
+          <td class="priority-only"><input type="text" value="2" /></td>
+        </tr>
+      </table>
+
+      <div id="quantumParagraph">
+        Time Quantum: <input id="quantum" type="text" value="3" />
+      </div>
+      
+      <div class="action-buttons">
+        <div class="controller">
+          <input id="minus" type="button" value="-" onclick="deleteRow();" />
+          <input type="button" value="+" onclick="addRow();" />
+        </div>
+        <input type="button" class="simulate-button" value="Simulate" onclick="draw();" />
+      </div>
+    </div>
+
+    <fresh>
+      <!-- Progress Bar + Animation Controls -->
+      <div class="animation-controls">
+        <div class="progress-container">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div id="completionMessage" class="completion-message">Simulation Complete!</div>
+      </div>
+    </fresh>
+    
+    <div class="result-container">
+      <p class="zaz">
+        Total Completion Time: <strong id="timer"></strong> seconds
+      </p>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
