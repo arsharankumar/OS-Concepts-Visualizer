@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Security Algorithms</title>
+  <link rel="stylesheet" href="security.css"/>
+</head>
+<body>
+  <div class="jumbotron">
+    <h1 class="display-4">Security Algorithms</h1>
+    <hr class="my-4" />
+    <p class="lead">
+      The security of a computer system is a crucial task. It is a process of ensuring the integrity of the OS.<br>
+      A system is said to be secure if its resources are used and accessed as intended, but no system can guarantee absolute security from all malicious threats.
+    </p>
+    <p class="my-4">
+      Security can be threatened via two violations:
+      <br> - <strong>Threat:</strong> A program that can cause damage to the system.
+      <br> - <strong>Attack:</strong> An attempt to break security and make unauthorized use of assets.
+    </p>
+  </div>
+
+  <div class="info-container">
+    <div class="info-box">
+      <h2>SHA1</h2>
+      <p>SHA-1 produces a 160-bit hash value and is used in protocols like TLS, SSL, SSH. Though once widely used, it's now considered weak against attacks.</p>
+    </div>
+    <div class="info-box">
+      <h2>SHA256</h2>
+      <p>SHA-256 produces a 256-bit hash value. It is highly secure and used in modern cryptographic applications and blockchain technology.</p>
+    </div>
+    <div class="info-box">
+      <h2>MD4</h2>
+      <p>MD4 generates a 128-bit hash but is no longer secure due to its vulnerability to attacks. It is outdated and deprecated for security use.</p>
+    </div>
+    <div class="info-box">
+      <h2>MD5</h2>
+      <p>MD5 is commonly used for checksums and file integrity, but is not cryptographically secure due to collision vulnerabilities.</p>
+    </div>
+  </div>
+
+  <div class="hasher">
+    <label for="hashes">Choose a hash function:</label>
+    <select id="hashes">
+      <option value="1">SHA1</option>
+      <option value="2">SHA256</option>
+      <option value="3">MD4</option>
+      <option value="4">MD5</option>
+    </select>
+
+    <textarea class="textbox" id="input_text" placeholder="Insert text to hash"></textarea>
+    <button onclick="hash()">Hash it!</button>
+    <textarea class="textbox" id="hash" placeholder="Output hash" readonly></textarea>
+  </div>
+
+  <script src="sha1.js"></script>
+  <script src="sha256.js"></script>
+  <script src="md4.js"></script>
+  <script src="md5.js"></script>
+  <script>
+    function hash() {
+      const type = document.getElementById("hashes").value;
+      const input = document.getElementById("input_text").value;
+      let result = "";
+
+      if (type === "1") result = SHA1(input);
+      else if (type === "2") result = sha256(input);
+      else if (type === "3") result = hex_md4(input);
+      else if (type === "4") result = md5(input);
+
+      document.getElementById("hash").value = result;
+    }
+  </script>
+</body>
+</html>
