@@ -32,7 +32,7 @@
     h1 {
       font-size: 2rem;
       color: #7dd3fc;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .btn-group {
@@ -40,23 +40,51 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     button {
-      padding: 12px 24px;
+      padding: 12px 18px;
       font-size: 1rem;
-      background-color: #b214f0;
-      border: none;
       border-radius: 8px;
-      cursor: pointer;
-      color: #fff;
+      border: none;
       transition: 0.3s ease;
+      background-color: #b214f0;
+      color: white;
+      cursor: pointer;
     }
 
     button:hover {
       background-color: #f43f5e;
       transform: translateY(-2px);
+    }
+
+    .semaphores {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .semaphore {
+      padding: 10px 20px;
+      border-radius: 10px;
+      background-color: #1f2937;
+      color: #ffffff;
+    }
+
+    .locked {
+      background-color: #dc2626;
+    }
+
+    .unlocked {
+      background-color: #16a34a;
+    }
+
+    #readerCount {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
     }
 
     #output {
@@ -84,6 +112,11 @@
       button {
         width: 100%;
       }
+
+      .semaphores {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   </style>
 </head>
@@ -91,58 +124,99 @@
 <body>
   <div class="container">
     <h1>Reader-Writer Problem Simulation</h1>
+
     <div class="btn-group">
       <button onclick="startReading()">Start Reading</button>
       <button onclick="stopReading()">Stop Reading</button>
       <button onclick="startWriting()">Start Writing</button>
       <button onclick="stopWriting()">Stop Writing</button>
     </div>
+
+    <div id="readerCount">🔢 Active Readers: 0</div>
+
+    <div class="semaphores">
+      <div id="readerMutex" class="semaphore unlocked">🔓 Reader Mutex: Unlocked</div>
+      <div id="writerMutex" class="semaphore unlocked">🔓 Writer Mutex: Unlocked</div>
+    </div>
+
     <div id="output">Simulation output will appear here...</div>
   </div>
 
   <script>
-    let readersCount = 0;
-    let writersCount = 0;
-    let reading = false;
-    let writing = false;
+    let readerCount = 0;
+    let writerActive = false;
+    let writerMutex = true; // true = unlocked
+    let readerMutex = true; // true = unlocked
+
+    function updateMutexDisplay() {
+      const w = document.getElementById('writerMutex');
+      const r = document.getElementById('readerMutex');
+
+      w.className = 'semaphore ' + (writerMutex ? 'unlocked' : 'locked');
+      r.className = 'semaphore ' + (readerMutex ? 'unlocked' : 'locked');
+
+      w.textContent = `${writerMutex ? '🔓' : '🔒'} Writer Mutex: ${writerMutex ? 'Unlocked' : 'Locked'}`;
+      r.textContent = `${readerMutex ? '🔓' : '🔒'} Reader Mutex: ${readerMutex ? 'Unlocked' : 'Locked'}`;
+
+      document.getElementById('readerCount').textContent = `🔢 Active Readers: ${readerCount}`;
+    }
 
     function startReading() {
-      if (!writing) {
-        readersCount++;
-        reading = true;
-        updateOutput(`📖 Reader ${readersCount} started reading.`);
-      } else {
-        updateOutput(`❌ Reader denied. Writer is writing.`);
+      if (!readerMutex) {
+        updateOutput('❌ Cannot start reader. Reader mutex is locked (writer is writing).');
+        return;
       }
+
+      readerCount++;
+
+      if (readerCount === 1) {
+        writerMutex = false;
+        updateOutput(`📖 Reader ${readerCount} started reading. Writer mutex locked.`);
+      } else {
+        updateOutput(`📖 Reader ${readerCount} started reading.`);
+      }
+
+      updateMutexDisplay();
     }
 
     function stopReading() {
-      if (reading && readersCount > 0) {
-        updateOutput(`✅ Reader ${readersCount} stopped reading.`);
-        readersCount--;
-        if (readersCount === 0) reading = false;
+      if (readerCount > 0) {
+        updateOutput(`✅ Reader ${readerCount} stopped reading.`);
+        readerCount--;
+
+        if (readerCount === 0) {
+          writerMutex = true;
+          updateOutput('🔓 No readers left. Writer mutex unlocked.');
+        }
+
+        updateMutexDisplay();
       } else {
-        updateOutput(`⚠️ No readers are currently reading.`);
+        updateOutput('⚠ No readers to stop.');
       }
     }
 
     function startWriting() {
-      if (reading || writing) {
-        updateOutput(`❌ Writer denied. Readers or a writer already active.`);
-      } else {
-        writersCount++;
-        writing = true;
-        updateOutput(`✍️ Writer ${writersCount} started writing.`);
+      if (!writerMutex || readerCount > 0 || writerActive) {
+        updateOutput('❌ Cannot start writer. Readers active or mutex locked.');
+        return;
       }
+
+      writerActive = true;
+      writerMutex = false;
+      readerMutex = false; // block new readers
+      updateOutput('✍ Writer started writing. Reader mutex locked.');
+      updateMutexDisplay();
     }
 
     function stopWriting() {
-      if (writing) {
-        updateOutput(`✅ Writer ${writersCount} stopped writing.`);
-        writing = false;
-        writersCount--;
+      if (writerActive) {
+        writerActive = false;
+        writerMutex = true;
+        readerMutex = true; // allow readers again
+        updateOutput('✅ Writer stopped writing. Writer and Reader mutex unlocked.');
+        updateMutexDisplay();
       } else {
-        updateOutput(`⚠️ No writer is currently writing.`);
+        updateOutput('⚠ No writer is currently writing.');
       }
     }
 
@@ -151,6 +225,9 @@
       output.innerHTML += message + "<br>";
       output.scrollTop = output.scrollHeight;
     }
+
+    // Initial setup
+    updateMutexDisplay();
   </script>
 </body>
 
