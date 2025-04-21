@@ -1,311 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title style="font-family:'Courier New'">File Allocation Simulation</title>
-    <link rel="stylesheet" type="text/css"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #1e1e2f;
-            color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .horizontal-list {
-            display: flex;
-            color: #f0f0f0;
-            justify-content: space-evenly;
-        }
-
-        .horizontal-list li {
-            flex-basis: 0;
-            flex-grow: 1;
-            padding: 5px;
-            text-align: center;
-        }
-
-        .container {
-            width: 70%;
-            text-align: center;
-            padding: 20px;
-            margin-left: 50px;
-            margin: auto;
-        }
-
-        .container select,
-        .container button {
-            padding: 10px;
-            font-size: larger;
-            margin-bottom: 20px;
-            width: 300px;
-            background-color: #3d3d5c;
-            color: #f0f0f0;
-            border: 1px solid #7dd3fc;
-            transition: .3s;
-        }
-
-        .container select:hover,
-        .container button:hover {
-            transform: translateY(-3px);
-            background-color: #595959;
-        }
-
-        table {
-            margin: auto;
-            width: 100%;
-            text-align: center;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #686868;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #7b7b7b;
-        }
-
-        tr:hover {
-            background-color: #333333;
-            color: #7dd3fc;
-        }
-
-        .jumbotron {
-            margin-left: 1%;
-            margin-right: 1%;
-            margin-top: 5%;
-            background-color: #040425;
-            padding: 20px;
-        }
-
-        .display-4 {
-            color: #f0f0f0;
-            text-align: center;
-        }
-
-        .my-4 {
-            border-color: #7dd3fc;
-        }
-
-        .lead {
-            color: #f0f0f0;
-        }
-
-        .horizontal-list li:hover {
-            background-color: #7dd3fc;
-            color: #000000;
-            cursor: pointer;
-        }
-    </style>
+    <title>File Allocation Systems | Interactive Simulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="FileAllocation.css">
 </head>
-
 <body>
-    <div class="jumbotron">
-        <h1 class="display-4">File Allocation</h1>
-        <hr class="my-4">
-        <p class="lead">
-            Whenever a hard disk is formatted, a system has many small areas called blocks or sectors that are used to
-            store any kind of file. File allocation methods are different ways by which the operating system stores
-            information in memory blocks, thus allowing the hard drive to be utilized effectively and the file to be
-            accessed.</p>
-        <p class="my-4">
-        <ul class="horizontal-list">
-            <li>Sequential Algorithm</li>
-            <li>Linked Algorithm</li>
-            <li>Indexed Algorithm</li>
-            <li>FAT (File Allocation Table)</li>
-            <li>Multi-Level Indexing</li>
-            <li>Clustered Allocation</li>
-        </ul>
-        </p>
-    </div>
-    <div class="container">
-        <select id="allocationMethod">
-            <option value="sequential">Sequential</option>
-            <option value="linked">Linked</option>
-            <option value="indexed">Indexed</option>
-            <option value="fat">FAT</option>
-            <option value="multi-level">Multi-Level Indexing</option>
-            <option value="clustered">Clustered</option>
-        </select>
-        <button onclick="allocateFile()">Allocate File</button>
-        <table id="fileTable">
-            <tr>
-                <th class="active">File</th>
-                <th>Allocation Method</th>
-                <th>Blocks</th>
-            </tr>
-        </table>
-    </div>
+    <header class="hero">
+        <div class="container">
+            <h1><i class="fas fa-hdd"></i> File Allocation Systems</h1>
+            <p class="tagline">Interactive visualization of disk space management techniques in modern operating systems</p>
+        </div>
+    </header>
 
-    <script>
-        let fileCounter = 1;
-        const totalBlocks = 100;
-        let availableBlocks = Array.from({ length: totalBlocks }, (_, i) => i + 1);
-        let allocatedBlocks = new Set();
+    <main>
+        <div class="container">
+            <!-- Interactive Simulator Section -->
+            <section id="simulator" class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-microscope"></i> Interactive Simulator</h2>
+                    <p>Experiment with different file allocation methods and see how they work in real-time</p>
+                </div>
 
-        function allocateFile() {
-            const allocationMethod = document.getElementById("allocationMethod").value;
-            const fileSize = Math.floor(Math.random() * 10) + 1;
-            let blocks;
+                <div class="simulator-wrapper">
+                    <div class="config-panel">
+                        <h3>Configuration</h3>
+                        
+                        <div class="form-group">
+                            <label for="total-blocks">
+                                <i class="fas fa-cube"></i> Disk Size:
+                            </label>
+                            <div class="input-with-controls">
+                                <input type="number" id="total-blocks" min="10" max="100" value="30">
+                                <span class="unit">blocks</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="num-files">
+                                <i class="fas fa-file"></i> Number of Files:
+                            </label>
+                            <div class="input-with-controls">
+                                <input type="number" id="num-files" min="1" max="10" value="3">
+                            </div>
+                        </div>
+                        
+                        <div id="file-sizes-container" class="file-sizes">
+                            <!-- File size inputs will be dynamically generated here -->
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="allocation-method">
+                                <i class="fas fa-sitemap"></i> Allocation Method:
+                            </label>
+                            <select id="allocation-method" class="select-styled">
+                                <option value="contiguous">Sequential (Contiguous)</option>
+                                <option value="linked">Linked List</option>
+                                <option value="indexed">Indexed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button id="run-simulation" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Run Simulation
+                            </button>
+                            <button id="reset-simulation" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
 
-            switch (allocationMethod) {
-                case "sequential":
-                    blocks = allocateSequentialBlocks(fileSize);
-                    break;
-                case "linked":
-                    blocks = allocateLinkedBlocks(fileSize);
-                    break;
-                case "indexed":
-                    const indexBlock = allocateIndexBlock();
-                    const dataBlocks = allocateDataBlocks(fileSize);
-                    if (indexBlock && dataBlocks.length === fileSize) {
-                        blocks = { indexBlock, dataBlocks };
-                    } else {
-                        blocks = null;
-                    }
-                    break;
-                case "fat":
-                    blocks = allocateFATBlocks(fileSize);
-                    break;
-                case "multi-level":
-                    blocks = allocateMultiLevelBlocks(fileSize);
-                    break;
-                case "clustered":
-                    blocks = allocateClusteredBlocks(fileSize);
-                    break;
-            }
+                    <div class="simulation-output">
+                        <div class="disk-visualization">
+                            <h3><i class="fas fa-database"></i> Disk Blocks</h3>
+                            <div class="instructions">
+                                <p>Click on blocks to mark them as busy before running the simulation</p>
+                            </div>
+                            <div id="disk-container" class="disk-grid">
+                                <!-- Disk blocks will be rendered here -->
+                            </div>
+                        </div>
+                        
+                        <div class="allocation-results">
+                            <h3><i class="fas fa-info-circle"></i> Allocation Details</h3>
+                            <div id="allocation-info" class="info-panel">
+                                <!-- Allocation information will be shown here -->
+                                <p>Select an allocation method and run the simulation to see results</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            if (blocks) {
-                displayFileAllocation(fileCounter, allocationMethod, blocks);
-                fileCounter++;
-            } else {
-                alert("Not enough space to allocate the file.");
-            }
-        }
+            <!-- Key Concepts Section -->
+            <section id="concepts" class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-book"></i> Understanding File Allocation</h2>
+                    <p>Learn how operating systems manage files on storage devices</p>
+                </div>
 
-        function allocateSequentialBlocks(fileSize) {
-            if (availableBlocks.length < fileSize) return null;
-            const startBlock = availableBlocks[0];
-            availableBlocks.splice(0, fileSize);
-            return { start: startBlock, end: startBlock + fileSize - 1 };
-        }
+                <div class="concept-wrapper">
+                    <div class="concept-intro">
+                        <h3>What is File Allocation?</h3>
+                        <p>File allocation refers to the methods operating systems use to organize and store files on storage devices. When you save a file, the OS needs to find available space and keep track of where each part of the file is stored.</p>
+                        
+                        <div class="info-box">
+                            <div class="info-icon"><i class="fas fa-lightbulb"></i></div>
+                            <div class="info-content">
+                                <h4>Why is it important?</h4>
+                                <p>Efficient file allocation systems allow for:</p>
+                                <ul class="feature-list">
+                                    <li><span class="highlight">Optimized storage utilization</span> - maximizing available disk space</li>
+                                    <li><span class="highlight">Fast access times</span> - reducing the time needed to read and write files</li>
+                                    <li><span class="highlight">Minimal fragmentation</span> - preventing performance degradation</li>
+                                    <li><span class="highlight">Reliable storage</span> - ensuring data integrity and recoverability</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        function allocateLinkedBlocks(fileSize) {
-            const blocks = [];
-            for (let i = 0; i < fileSize; i++) {
-                if (availableBlocks.length === 0) break;
-                const index = Math.floor(Math.random() * availableBlocks.length);
-                blocks.push(availableBlocks.splice(index, 1)[0]);
-            }
-            return blocks.length === fileSize ? blocks : null;
-        }
+            <!-- Allocation Methods Section -->
+            <section id="methods" class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-layer-group"></i> Allocation Methods Compared</h2>
+                    <p>Three primary approaches to organizing files on disk</p>
+                </div>
 
-        function allocateIndexBlock() {
-            if (availableBlocks.length === 0) return null;
-            const index = Math.floor(Math.random() * availableBlocks.length);
-            return availableBlocks.splice(index, 1)[0];
-        }
+                <div class="methods-grid">
+                    <!-- Contiguous Method -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-grip-lines"></i>
+                        </div>
+                        <div class="method-content">
+                            <h3>Sequential (Contiguous)</h3>
+                            <p>Files are stored in consecutive blocks on the disk, defined by a starting address and length.</p>
+                            
+                            <div class="pros-cons">
+                                <div class="pros">
+                                    <h4><i class="fas fa-plus-circle"></i> Advantages</h4>
+                                    <ul>
+                                        <li>Simple implementation</li>
+                                        <li>Excellent read performance</li>
+                                        <li>Supports both sequential and direct access</li>
+                                    </ul>
+                                </div>
+                                <div class="cons">
+                                    <h4><i class="fas fa-minus-circle"></i> Disadvantages</h4>
+                                    <ul>
+                                        <li>External fragmentation</li>
+                                        <li>Difficult to expand files</li>
+                                        <li>Requires knowing final file size in advance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        function allocateDataBlocks(fileSize) {
-            const dataBlocks = [];
-            for (let i = 0; i < fileSize; i++) {
-                if (availableBlocks.length === 0) break;
-                const index = Math.floor(Math.random() * availableBlocks.length);
-                dataBlocks.push(availableBlocks.splice(index, 1)[0]);
-            }
-            return dataBlocks;
-        }
+                    <!-- Linked Method -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="method-content">
+                            <h3>Linked List</h3>
+                            <p>Each block contains a pointer to the next block in the file chain, forming a linked list structure.</p>
+                            
+                            <div class="pros-cons">
+                                <div class="pros">
+                                    <h4><i class="fas fa-plus-circle"></i> Advantages</h4>
+                                    <ul>
+                                        <li>No external fragmentation</li>
+                                        <li>Files can grow dynamically</li>
+                                        <li>No need to declare size at creation</li>
+                                    </ul>
+                                </div>
+                                <div class="cons">
+                                    <h4><i class="fas fa-minus-circle"></i> Disadvantages</h4>
+                                    <ul>
+                                        <li>Poor random access performance</li>
+                                        <li>Storage space wasted for pointers</li>
+                                        <li>Reliability issues if pointers are damaged</li>
+                                    </ul>
+                                </div>
+                            </div>
 
-        function allocateFATBlocks(fileSize) {
-            const blocks = [];
-            let currentBlock = findNextFreeBlock(1);
-            if (currentBlock === -1) return null;
-            for (let i = 0; i < fileSize; i++) {
-                blocks.push(currentBlock);
-                currentBlock = findNextFreeBlock(currentBlock + 1);
-                if (currentBlock === -1) break;
-            }
-            if (blocks.length < fileSize) return null;
-            return blocks;
-        }
+                            <div class="note">
+                                <h5><i class="fas fa-info-circle"></i> File Allocation Table (FAT)</h5>
+                                <p>A variation of linked allocation where all pointers are stored in a separate table at the beginning of the disk.</p>
+                            </div>
+                        </div>
+                    </div>
 
-        function findNextFreeBlock(startingBlock) {
-            for (let i = startingBlock; i <= totalBlocks; i++) {
-                if (!allocatedBlocks.has(i)) {
-                    allocatedBlocks.add(i);
-                    return i;
-                }
-            }
-            return -1;
-        }
+                    <!-- Indexed Method -->
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <div class="method-content">
+                            <h3>Indexed</h3>
+                            <p>Each file has an index block containing pointers to all blocks belonging to the file.</p>
+                            
+                            <div class="pros-cons">
+                                <div class="pros">
+                                    <h4><i class="fas fa-plus-circle"></i> Advantages</h4>
+                                    <ul>
+                                        <li>Supports direct access without fragmentation</li>
+                                        <li>Files can grow as needed</li>
+                                        <li>No block consolidation issues</li>
+                                    </ul>
+                                </div>
+                                <div class="cons">
+                                    <h4><i class="fas fa-minus-circle"></i> Disadvantages</h4>
+                                    <ul>
+                                        <li>Index block overhead</li>
+                                        <li>File size limited by index block size</li>
+                                        <li>Multiple disk accesses required</li>
+                                    </ul>
+                                </div>
+                            </div>
 
-        function allocateMultiLevelBlocks(fileSize) {
-            const topLevelBlocks = Math.ceil(fileSize / 10);
-            const blocks = [];
-            let currentBlock = findNextFreeBlock(1);
-            if (currentBlock === -1) return null;
-            for (let i = 0; i < topLevelBlocks; i++) {
-                const subBlocks = [];
-                for (let j = 0; j < 10; j++) {
-                    subBlocks.push(currentBlock);
-                    currentBlock = findNextFreeBlock(currentBlock + 1);
-                    if (currentBlock === -1) break;
-                }
-                blocks.push(subBlocks);
-                if (currentBlock === -1) break;
-            }
-            if (blocks.flat().length < fileSize) return null;
-            return blocks;
-        }
+                            <div class="note">
+                                <h5><i class="fas fa-info-circle"></i> Extended Indexing</h5>
+                                <p>For larger files, systems may use linked indices, multi-level indexing, or combined schemes (like Unix inodes).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
 
-        function allocateClusteredBlocks(fileSize) {
-            const clustersRequired = Math.ceil(fileSize / 5);
-            const blocks = [];
-            for (let i = 0; i < clustersRequired; i++) {
-                const cluster = [];
-                for (let j = 0; j < 5; j++) {
-                    const block = findNextFreeBlock(1);
-                    if (block === -1) return null;
-                    cluster.push(block);
-                }
-                blocks.push(cluster);
-            }
-            return blocks;
-        }
+    <footer>
+        <div class="container">
+            <p>© 2025 File Allocation Simulator | Created for educational purposes</p>
+            <div class="footer-links">
+                <a href="#simulator">Simulator</a>
+                <a href="#concepts">Concepts</a>
+                <a href="#methods">Methods</a>
+            </div>
+        </div>
+    </footer>
 
-        function displayFileAllocation(fileNumber, allocationMethod, blocks) {
-            const table = document.getElementById("fileTable");
-            const row = table.insertRow(-1);
-            row.insertCell(0).innerHTML = `File ${fileNumber}`;
-            row.insertCell(1).innerHTML = allocationMethod.charAt(0).toUpperCase() + allocationMethod.slice(1);
-
-            if (allocationMethod === "indexed") {
-                row.insertCell(2).innerHTML = `Index: ${blocks.indexBlock}, Data: ${blocks.dataBlocks.join(", ")}`;
-            } else if (allocationMethod === "multi-level") {
-                let blockString = "";
-                blocks.forEach(subBlocks => {
-                    blockString += "[" + subBlocks.join(", ") + "] ";
-                });
-                row.insertCell(2).innerHTML = blockString;
-            } else if (allocationMethod === "clustered") {
-                let blockString = "";
-                blocks.forEach(cluster => {
-                    blockString += "{" + cluster.join(", ") + "} ";
-                });
-                row.insertCell(2).innerHTML = blockString;
-            } else {
-                row.insertCell(2).innerHTML = Array.isArray(blocks) ? blocks.join(", ") : `${blocks.start} - ${blocks.end}`;
-            }
-        }
-    </script>
+    <script src="FileAllocation.js"></script>
 </body>
-
 </html>
