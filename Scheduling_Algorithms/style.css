@@ -1,0 +1,775 @@
+body {
+  background-color: #1e1e2f;
+  color: #f0f0f0;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  accent-color: black;
+}
+
+.jumbotron {
+  margin: 2% auto;
+  background-color: #111827;
+  padding: 30px 20px;
+  width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.display-4 {
+  color: #7dd3fc;
+  text-align: center;
+  font-weight: 600;
+}
+
+.lead {
+  font-size: 1.1rem;
+  color: #d1d5db;
+  margin-top: 15px;
+}
+
+.my-4 {
+  border-color: #7dd3fc;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  background-color: #1f2937;
+  padding: 20px;
+  border-radius: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 17px;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: #f0f0f0;
+  display: table;
+}
+
+th, td {
+  border: 1px solid #4b5563;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #111827;
+  color: #7dd3fc;
+}
+
+input[type="text"] {
+  text-align: center;
+  color: #111827;
+  width: 100%;
+  padding: 5px;
+  border-radius: 6px;
+  border: none;
+}
+
+input[type="button"] {
+  background-color: #2d3748;
+  color: #f0f0f0;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+  background-color: #4b5563;
+  color: #ffffff;
+}
+
+.controller {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  align-items: flex-end;
+  flex-direction: row;
+}
+
+#quantumParagraph {
+  margin-top: 30px;
+  color: #cbd5e1;
+}
+
+.zaz {
+  color: white;
+  font-size: 30px;
+}
+
+.priority-only {
+  display: table-cell;
+}
+
+/* Modern Visualization Styles */
+
+.visualization-container {
+  margin: 30px 0;
+  background-color: #111827;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  position: relative;
+}
+
+.gantt-chart {
+  position: relative;
+  height: 100px;
+  margin-bottom: 40px;
+  min-width: 100%;
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.process-block {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.process-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.process-label {
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.duration-label {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.timeline {
+  position: relative;
+  height: 50px;
+  margin-bottom: 30px;
+  min-width: 100%;
+}
+
+.timeline-marker {
+  position: absolute;
+  bottom: 20px;
+  transform: translateX(-50%);
+}
+
+.timeline-tick {
+  width: 2px;
+  height: 16px;
+  background-color: #7dd3fc;
+  margin: 0 auto;
+}
+
+.timeline-label {
+  color: #cbd5e1;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* Process Statistics */
+.process-stats-container {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border-top: 1px solid #2d3748;
+  padding-top: 20px;
+}
+
+.process-stats-container h3 {
+  color: #7dd3fc;
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+}
+
+.stats-table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #2d3748;
+}
+
+.stats-table th {
+  background-color: #1a1a2e;
+  color: #7dd3fc;
+  font-weight: 600;
+}
+
+.stats-table tr:last-child td {
+  border-bottom: none;
+}
+
+.stats-table tbody tr:hover {
+  background-color: #2d3748;
+}
+
+.process-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* Animation Controls */
+.animation-controls {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.progress-container {
+  height: 6px;
+  background-color: #2d3748;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #7dd3fc 0%, #3b82f6 100%);
+  transition: width 0.5s linear;
+}
+
+.completion-message {
+  color: #4ade80;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: rgba(74, 222, 128, 0.1);
+  display: none;
+  margin-top: 10px;
+}
+
+/* Curtain animation replaced with modern progress indicator */
+#curtain {
+  display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .controller {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .jumbotron,
+  .container {
+    width: 95%;
+  }
+
+  input[type="button"] {
+    width: 100%;
+  }
+  
+  .process-block {
+    font-size: 0.8rem;
+  }
+  
+  .stats-table th,
+  .stats-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Custom radio buttons */
+#algorithm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+#algorithm input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #4b5563;
+  margin-right: 10px;
+  position: relative;
+  top: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#algorithm input[type="radio"]:checked {
+  border-color: #7dd3fc;
+  background-color: #1e40af;
+}
+
+#algorithm input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #7dd3fc;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#algorithm label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Button styles */
+input[type="button"] {
+  background-color: #2d3748;
+  color: #f0f0f0;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+input[type="button"]:hover {
+  background-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+input[type="button"]:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Input table styling */
+#inputTable {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#inputTable th {
+  padding: 15px 10px;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+#inputTable td {
+  padding: 12px 10px;
+  transition: background-color 0.3s ease;
+}
+
+#inputTable tr:hover td {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Input field styling */
+input[type="text"] {
+  background-color: #f8fafc;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Quantum parameter styling */
+#quantumParagraph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 300px;
+}
+
+#quantum {
+  width: 60px;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Additional modern styling */
+
+.algorithm-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.algorithm-option:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.algorithm-option label {
+  margin-bottom: 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.input-section {
+  margin-bottom: 40px;
+}
+
+.input-section h3 {
+  color: #7dd3fc;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.controller {
+  display: flex;
+  gap: 10px;
+}
+
+.simulate-button {
+  background-color: #3b82f6;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 10px 30px;
+}
+
+.simulate-button:hover {
+  background-color: #2563eb;
+}
+
+.result-container {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #111827;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.zaz {
+  margin-bottom: 0;
+  color: #f0f0f0;
+  font-size: 1.5rem;
+}
+
+#timer {
+  color: #7dd3fc;
+  font-size: 2rem;
+  display: inline-block;
+  padding: 0 10px;
+}
+
+/* Add tooltip for process blocks */
+.process-block::after {
+  content: attr(data-process) " - " attr(data-duration) "s";
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #374151;
+  color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 20;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.process-block:hover::after {
+  opacity: 1;
+}
+
+/* Animation for timeline markers */
+@keyframes pulse {
+  0% { transform: scale(1) translateX(-50%); }
+  50% { transform: scale(1.2) translateX(-50%); }
+  100% { transform: scale(1) translateX(-50%); }
+}
+
+.timeline-marker {
+  cursor: pointer;
+}
+
+.timeline-marker:hover .timeline-tick {
+  animation: pulse 1s infinite;
+  background-color: #3b82f6;
+}
+
+/* Algorithm card-like appearance */
+#algorithm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.algorithm-option {
+  background-color: #1a1a2e;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.algorithm-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.algorithm-option input[type="radio"]:checked + label {
+  color: #7dd3fc;
+  font-weight: 600;
+}
+
+/* Process visualization legend */
+.process-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  background-color: #1a1a2e;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+
+/* Custom scrollbar for visualization container */
+.visualization-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.visualization-container::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border-radius: 4px;
+}
+
+.visualization-container::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+.visualization-container::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+.process-block.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.process-block.visible {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.8s ease-in-out, transform 0.1s ease;
+}
+
+.process-block {
+  /* Keep existing styles */
+  transform-origin: left; /* Make the block grow from left to right */
+  width: 0; /* Start with zero width */
+}
+
+.process-block.visible {
+  opacity: 1;
+  transform: scaleX(1); /* This will be animated */
+  transition: opacity 0.4s ease-in-out, transform 0.1s ease;
+}
+
+.process-block.animating {
+  transition: width 0.05s linear; /* Smooth width animation */
+}
+
+/* Algorithm Info Cards */
+.algorithm-info-container {
+  width: 90%;
+  margin: 0 auto 30px auto;
+  display: block;
+}
+
+.algorithm-card {
+  background-color: #1f2937;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-left: 5px solid #7dd3fc;
+  display: none; /* Hidden by default */
+  animation: slideIn 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.algorithm-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, rgba(125, 211, 252, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+  border-radius: 0 0 0 100%;
+  z-index: 0;
+}
+
+.algorithm-card h3 {
+  color: #7dd3fc;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.algorithm-card p {
+  color: #d1d5db;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.algorithm-card h4 {
+  color: #f0f0f0;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.algorithm-card ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.algorithm-card li {
+  color: #d1d5db;
+  margin-bottom: 8px;
+  line-height: 1.5;
+  position: relative;
+}
+
+/* Color variations for different algorithm cards */
+#fcfs-card { border-left-color: #7dd3fc; } /* Blue */
+#sjf-card { border-left-color: #4ade80; } /* Green */
+#srtf-card { border-left-color: #f59e0b; } /* Amber */
+#robin-card { border-left-color: #a78bfa; } /* Purple */
+#priority-card { border-left-color: #f43f5e; } /* Pink */
+#priorityPreemptive-card { border-left-color: #ec4899; } /* Rose */
+
+#fcfs-card::before { background: linear-gradient(135deg, rgba(125, 211, 252, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%); }
+#sjf-card::before { background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%); }
+#srtf-card::before { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%); }
+#robin-card::before { background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%); }
+#priority-card::before { background: linear-gradient(135deg, rgba(244, 63, 94, 0.1) 0%, rgba(225, 29, 72, 0.05) 100%); }
+#priorityPreemptive-card::before { background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(219, 39, 119, 0.05) 100%); }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .algorithm-card {
+    padding: 20px 15px;
+  }
+  
+  .algorithm-card h3 {
+    font-size: 1.4rem;
+  }
+  
+  .algorithm-card p, .algorithm-card li {
+    font-size: 1rem;
+  }
+}
+
+.average-stats p {
+  margin: 8px 0;
+  font-size: 17x;
+  color: #7dd3fc;/* This would change the text color */
+};
