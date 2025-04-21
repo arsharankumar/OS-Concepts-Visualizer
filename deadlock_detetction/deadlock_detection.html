@@ -1,180 +1,815 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deadlock Detection</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../disc_scheduling/css/disc_scheduling.css">
-    <link rel="stylesheet" href="css/deadlock_detection.css">
-  
-    <style>
-        body {
-            background-color: #1e1e2f;
-            color: #f0f0f0;
-        }
-
-        h1 {
-            color: #7dd3fc;
-        }
-
-        .jumbotron {
-            background-color: #2d2d42;
-            color: #f0f0f0;
-            border-radius: 8px;
-        }
-
-        .form_group {
-            padding-left: 8%;
-            padding-right: 5%;
-        }
-
-        .field {
-            margin-bottom: 15px;
-        }
-
-        .field label {
-            color: #ccc;
-        }
-
-        .form-control, input[type="number"] {
-            background-color: #2d2d42;
-            color: #f0f0f0;
-            border-color: #7dd3fc;
-        }
-
-        .form-control:focus, input[type="number"]:focus {
-            background-color: #3b3b5c;
-            color: #f0f0f0;
-            border-color: #7dd3fc;
-        }
-
-        .btn-primary, .btn-success {
-            background-color: #7dd3fc;
-            border-color: #7dd3fc;
-        }
-
-        .btn-primary:hover, .btn-success:hover {
-            background-color: #4fa3c7;
-            border-color: #4fa3c7;
-        }
-
-        .row-container {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .dead-lock-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .processes, .resources {
-            background-color: #2d2d42;
-            border-radius: 8px;
-            padding: 15px;
-            width: 48%;
-        }
-
-        .panel-footer {
-            background-color: #2d2d42;
-            color: #f0f0f0;
-            border-top: 1px solid #7dd3fc;
-        }
-
-        hr.my-4 {
-            border-color: #7dd3fc;
-        }
-
-        button {
-            width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deadlock Detection Simulator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+  <link rel="stylesheet" href="deadlock_detection.css">
 </head>
-
 <body>
-    <div class="jumbotron">
-        <h1 class="display-4">Deadlock Detection</h1>
-        <hr class="my-4">
-        <p class="lead">
-            A deadlock occurs when two or more processes are blocked, waiting for each other to release the resources they need. To prevent deadlocks, the OS periodically checks the system for potential deadlock situations using techniques like Resource Allocation Graph (RAG) and Wait For Graph (WFG).
-        </p>
-    </div>
-    <div class="form_group" style="padding-left: 8%; padding-right: 5%;">
-        <div class="field">
-            <button id="cprocess" class="btn btn-primary" onclick="createProcess()">Create New Process</button>
+  <header>
+    <h1><i class="fas fa-project-diagram"></i> Deadlock Detection Simulator</h1>
+    <p class="subtitle">Visualize and identify resource allocation deadlocks in operating systems</p>
+    <button id="show-theory" class="btn info" title="Learn about deadlock detection theory">
+      <i class="fas fa-book"></i> Theory
+    </button>
+  </header>
+  
+  <div class="container">
+    <aside class="controls">
+      <div class="control-panel">
+        <h2><i class="fas fa-plus-circle"></i> Create Nodes</h2>
+        <div class="action-buttons">
+          <button id="cprocess" class="btn primary" title="Add a new process node">
+            <i class="fas fa-circle"></i> Create Process
+          </button>
+          <div class="input-group">
+            <input type="number" id="num_res" min="1" value="1" placeholder="Instances">
+            <button id="cres" class="btn secondary" title="Add a new resource node">
+              <i class="fas fa-cube"></i> Create Resource
+            </button>
+          </div>
         </div>
-
-        <div class="row-container">
-            <div class="field">
-                <label for="pro">Process</label>
-                <input type="number" id="rpro" placeholder="1" style="width: 40px"/>
+      </div>
+      
+      <div class="control-panel">
+        <h2><i class="fas fa-exchange-alt"></i> Create Edges</h2>
+        <div class="edge-form">
+          <div class="form-group">
+            <label><i class="fas fa-arrow-right"></i> Request Edge (P → R):</label>
+            <div class="input-row">
+              <input type="number" id="rpro" min="1" placeholder="Process #">
+              <span class="arrow">→</span>
+              <input type="number" id="rres" min="1" placeholder="Resource #">
             </div>
+            <button id="creqedge" class="btn primary" title="Create a request edge from process to resource">
+              Create Request Edge
+            </button>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-arrow-left"></i> Allocation Edge (R → P):</label>
+            <div class="input-row">
+              <input type="number" id="ares" min="1" placeholder="Resource #">
+              <span class="arrow">→</span>
+              <input type="number" id="apro" min="1" placeholder="Process #">
+            </div>
+            <button id="calocedge" class="btn secondary" title="Create an allocation edge from resource to process">
+              Create Allocation Edge
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-panel">
+        <h2><i class="fas fa-trash-alt"></i> Delete Edge</h2>
+        <div class="delete-form">
+          <div class="input-row">
+            <input type="text" id="delete-edge-source" placeholder="e.g., P1, R1">
+            <span class="arrow">→</span>
+            <input type="text" id="delete-edge-target" placeholder="e.g., R1, P1">
+          </div>
+          <button id="delete-edge" class="btn danger" title="Delete an existing edge">
+            Delete Edge
+          </button>
+          <div class="help-text">
+            <small><i class="fas fa-info-circle"></i> Tip: You can also click directly on any edge to delete it</small>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-panel algorithm-panel">
+        <h2><i class="fas fa-cogs"></i> Algorithm Settings</h2>
+        <div class="algorithm-options">
+          <div class="form-group">
+            <label for="algorithm-select">Detection Method:</label>
+            <select id="algorithm-select" class="select-dropdown">
+              <option value="resource-allocation">Resource Allocation Graph</option>
+              <option value="wait-for">Wait-For Graph</option>
+            </select>
+          </div>
+          <div class="option-checkbox">
+            <input type="checkbox" id="show-animation" checked>
+            <label for="show-animation">Show Detection Animation</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="detection-panel">
+        <div id="result" class="result-box">
+          <div class="status-indicator"></div>
+          <span class="status-text">No deadlock detection run yet</span>
+        </div>
+        <button id="start" class="btn detect" title="Run the deadlock detection algorithm">
+          <i class="fas fa-search"></i> Detect Deadlock
+        </button>
+        <button id="reset" class="btn reset" title="Reset the workspace">
+          <i class="fas fa-sync-alt"></i> Reset Workspace
+        </button>
+      </div>
+    </aside>
     
-            <div class="field">
-                <label for="res">Resource</label>
-                <input type="number" id="rres" placeholder="1" style="width: 40px"/>
-            </div>
-    
-            <div class="field">
-                <button id="creqedge" class="btn btn-primary" onclick="createRequestEdge()">Create Request Edge</button>
-            </div>
+    <main class="workspace-container" id="workspace">
+      <!-- Processes and Resources will be created here -->
+      <div class="workspace-guide">
+        <div class="guide-icon"><i class="fas fa-info-circle"></i></div>
+        <h3>Start Building Your System</h3>
+        <p>Create processes and resources using the controls on the left</p>
+        <p>Drag nodes to position them in the workspace</p>
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-circle"></div>
+            <span>Process</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-rect"></div>
+            <span>Resource</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-line request"></div>
+            <span>Request Edge</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-line allocation"></div>
+            <span>Allocation Edge</span>
+          </div>
         </div>
+      </div>
+    </main>
+    <div class="zoom-controls">
+      <button id="zoom-in" class="zoom-btn" title="Zoom in"><i class="fas fa-search-plus"></i></button>
+      <button id="zoom-reset" class="zoom-btn" title="Reset zoom"><i class="fas fa-compress-arrows-alt"></i></button>
+      <button id="zoom-out" class="zoom-btn" title="Zoom out"><i class="fas fa-search-minus"></i></button>
     </div>
-
-    <div class="form_group" style="padding-left: 5%; padding-right: 5%; margin-top: 5%;">
-        <div class="row-container">
-            <div class="field">
-                <label for="num_res">Number of Instance(s)</label>
-                <input type="number" id="num_res" placeholder="1"/>
-            </div>
-    
-            <div class="field">
-                <button id="cres" class="btn btn-primary" onclick="createResource()">Create New Resource</button>
-            </div>
-        </div>
-
-        <div class="row-container">
-            <div class="field">
-                <label for="pro">Resource</label>
-                <input type="number" id="ares" placeholder="1" style="width: 40px"/>
-            </div>
-    
-            <div class="field">
-                <label for="res">Process</label>
-                <input type="number" id="apro" placeholder="1" style="width: 40px"/>
-            </div>
-    
-            <div class="field">
-                <button id="calocedge" class="btn btn-primary" onclick="createAllocationEdge()">Create Allocation Edge</button>
-            </div>
-        </div>
+  </div>
+  
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-content"></div>
+  </div>
+  
+  <div class="modal" id="deadlock-modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Deadlock Detected</h2>
+      <div class="modal-body">
+        <p>A deadlock has been detected in the system.</p>
+        <div class="cycle-info"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn primary" id="highlight-cycle">Highlight Cycle</button>
+        <button class="btn secondary" id="close-modal">Close</button>
+      </div>
     </div>
-
-    <hr class="my-4">
-
-    <div class="form_group" style="padding-left: 75%; padding-right: 5%;">
-        <div class="field">
-            <label for="start" id="result">&nbsp</label>
-            <button id="start" class="btn-success btn btn-primary" onclick="detectDeadlock()">Detect Deadlock</button>
+  </div>
+  
+  <!-- Theory Modal -->
+  <div class="modal" id="theory-modal">
+    <div class="modal-content theory-content">
+      <span class="close-modal" id="close-theory">&times;</span>
+      <h2 class="modal-title"><i class="fas fa-book"></i> Deadlock Detection Theory</h2>
+      
+      <div class="theory-tabs">
+        <button class="theory-tab active" data-section="what-is-deadlock">What is a Deadlock?</button>
+        <button class="theory-tab" data-section="resource-allocation">Resource Allocation Graph</button>
+        <button class="theory-tab" data-section="wait-for">Wait-For Graph</button>
+        <button class="theory-tab" data-section="simulator-guide">Using This Simulator</button>
+      </div>
+      
+      <div class="modal-body theory-content-body">
+        <div id="what-is-deadlock" class="theory-section active">
+          <div class="theory-header">
+            <div class="theory-icon"><i class="fas fa-lock"></i></div>
+            <h3>What is a Deadlock?</h3>
+          </div>
+          <p>
+            A deadlock is a situation in operating systems where two or more processes are unable to proceed because each is 
+            waiting for resources held by another process in the same set. This creates a circular dependency where no process can continue execution.
+          </p>
+          
+          <div class="info-box">
+            <div class="info-header">Necessary Conditions for Deadlock</div>
+            <p>All four conditions must be present simultaneously for a deadlock to occur:</p>
+            <ol>
+              <li>
+                <strong>Mutual Exclusion:</strong> 
+                <span>At least one resource must be held in a non-sharable mode, meaning it can be used by only one process at a time.</span>
+              </li>
+              <li>
+                <strong>Hold and Wait:</strong> 
+                <span>Processes must be holding at least one resource while simultaneously waiting to acquire additional resources that are currently held by other processes.</span>
+              </li>
+              <li>
+                <strong>No Preemption:</strong> 
+                <span>Resources cannot be forcibly taken away from a process; they must be released voluntarily by the process holding them.</span>
+              </li>
+              <li>
+                <strong>Circular Wait:</strong> 
+                <span>A circular chain of processes exists, each waiting for a resource held by the next process in the chain, forming a cycle.</span>
+              </li>
+            </ol>
+          </div>
+          
+          <div class="theory-image">
+            <div class="deadlock-illustration">
+              <div class="process p1">P1</div>
+              <div class="resource r1">R1</div>
+              <div class="process p2">P2</div>
+              <div class="resource r2">R2</div>
+              <div class="arrow a1"></div>
+              <div class="arrow a2"></div>
+              <div class="arrow a3"></div>
+              <div class="arrow a4"></div>
+            </div>
+            <div class="image-caption">A simple deadlock scenario where P1 holds R1 and requests R2, while P2 holds R2 and requests R1</div>
+          </div>
         </div>
+        
+        <div id="resource-allocation" class="theory-section">
+          <div class="theory-header">
+            <div class="theory-icon"><i class="fas fa-project-diagram"></i></div>
+            <h3>Resource Allocation Graph (RAG)</h3>
+          </div>
+          <p>
+            A Resource Allocation Graph is a directed graph used to analyze and visualize the state of resource allocation in a system.
+            It helps identify potential deadlocks by representing the relationships between processes and resources.
+          </p>
+          
+          <div class="info-box">
+            <div class="info-header">Components of a Resource Allocation Graph</div>
+            <div class="component-grid">
+              <div class="component">
+                <div class="component-shape process-shape"></div>
+                <div class="component-desc">
+                  <strong>Process Nodes</strong>
+                  <span>Represented as circles</span>
+                </div>
+              </div>
+              <div class="component">
+                <div class="component-shape resource-shape"></div>
+                <div class="component-desc">
+                  <strong>Resource Nodes</strong>
+                  <span>Represented as rectangles</span>
+                </div>
+              </div>
+              <div class="component">
+                <div class="component-edge request-edge"></div>
+                <div class="component-desc">
+                  <strong>Request Edge (P → R)</strong>
+                  <span>Process requesting a resource</span>
+                </div>
+              </div>
+              <div class="component">
+                <div class="component-edge allocation-edge"></div>
+                <div class="component-desc">
+                  <strong>Allocation Edge (R → P)</strong>
+                  <span>Resource allocated to a process</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="key-concept">
+            <div class="concept-header">Detecting Deadlocks with RAG</div>
+            <p>
+              <strong>For single-instance resources:</strong> A deadlock exists if and only if the Resource Allocation Graph contains a cycle.
+            </p>
+            <p>
+              <strong>For multi-instance resources:</strong> The presence of a cycle is a necessary but not sufficient condition for deadlock. 
+              Additional analysis using algorithms like the Banker's algorithm is required.
+            </p>
+          </div>
+        </div>
+        
+        <div id="wait-for" class="theory-section">
+          <div class="theory-header">
+            <div class="theory-icon"><i class="fas fa-hourglass-half"></i></div>
+            <h3>Wait-For Graph (WFG)</h3>
+          </div>
+          <p>
+            A Wait-For Graph is a simplified version of the Resource Allocation Graph that focuses on process dependencies.
+            It eliminates resource nodes and shows only the waiting relationships between processes.
+          </p>
+          
+          <div class="info-box">
+            <div class="info-header">Constructing a Wait-For Graph</div>
+            <ol>
+              <li>Each process in the system is represented as a node.</li>
+              <li>An edge from process P<sub>i</sub> to process P<sub>j</sub> indicates that P<sub>i</sub> is waiting for a resource that is currently held by P<sub>j</sub>.</li>
+              <li>The graph is derived from the Resource Allocation Graph by "short-circuiting" through resource nodes.</li>
+            </ol>
+          </div>
+          
+          <div class="theory-image">
+            <div class="wfg-transformation">
+              <div class="rag-side">
+                <div class="process p1">P1</div>
+                <div class="resource r1">R1</div>
+                <div class="process p2">P2</div>
+                <div class="arrow a1"></div>
+                <div class="arrow a2"></div>
+              </div>
+              <div class="transform-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+              <div class="wfg-side">
+                <div class="process p1">P1</div>
+                <div class="process p2">P2</div>
+                <div class="arrow a3"></div>
+              </div>
+            </div>
+            <div class="image-caption">Transformation from RAG to WFG: P1 requesting R1 (held by P2) becomes P1 waiting for P2</div>
+          </div>
+          
+          <div class="key-concept">
+            <div class="concept-header">Deadlock Detection using WFG</div>
+            <p>
+              A deadlock exists in the system if and only if there is a cycle in the Wait-For Graph.
+              To detect deadlocks, we can use algorithms like depth-first search to find cycles in the graph.
+            </p>
+          </div>
+        </div>
+        
+        <div id="simulator-guide" class="theory-section">
+          <div class="theory-header">
+            <div class="theory-icon"><i class="fas fa-user-cog"></i></div>
+            <h3>Using This Simulator</h3>
+          </div>
+          <p>
+            This simulator allows you to experiment with resource allocation graphs and deadlock detection algorithms
+            in a visual, interactive environment. You can create processes and resources, establish relationships between them,
+            and detect potential deadlocks in your system configuration.
+          </p>
+          
+          <div class="feature-list">
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-plus-circle"></i></div>
+              <div class="feature-desc">
+                <strong>Create System Components</strong>
+                <p>Add processes and resources with multiple instances to your system.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-exchange-alt"></i></div>
+              <div class="feature-desc">
+                <strong>Establish Relationships</strong>
+                <p>Create request and allocation edges between processes and resources.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-search"></i></div>
+              <div class="feature-desc">
+                <strong>Detect Deadlocks</strong>
+                <p>Run detection algorithms to identify deadlocks in your system.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><i class="fas fa-eye"></i></div>
+              <div class="feature-desc">
+                <strong>Visualize Cycles</strong>
+                <p>See deadlock cycles highlighted in your resource allocation graph.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="example-scenario">
+            <div class="example-header">Example Scenario: The Dining Philosophers Problem</div>
+            <p>
+              Try recreating the classic Dining Philosophers problem:
+            </p>
+            <ol>
+              <li>Create 5 processes (P1-P5) representing philosophers</li>
+              <li>Create 5 resources (R1-R5) representing forks</li>
+              <li>Establish allocation and request edges representing each philosopher holding one fork and requesting another</li>
+              <li>Run deadlock detection to see if a deadlock occurs</li>
+            </ol>
+            <p>
+              This exercise helps demonstrate how circular wait conditions can lead to deadlocks in real systems.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn primary" id="close-theory-btn">Close</button>
+      </div>
     </div>
-
-    <div class="dead-lock-container">
-        <div class="processes">
-            <h5>Processes</h5>
-            <!-- Process details will go here -->
-        </div>
-        <div class="resources">
-            <h5>Resources</h5>
-            <!-- Resource details will go here -->
-        </div>
-    </div>
-
-    <script src="../deadlock_detetction/js/deadlock_detection.js"></script>
+  </div>
+  
+  <script src="deadlock_detection.js" defer></script>
+  
+  <!-- Additional JavaScript for the Theory Modal -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const theoryBtn = document.getElementById('show-theory');
+      const theoryModal = document.getElementById('theory-modal');
+      const closeTheory = document.getElementById('close-theory');
+      const closeTheoryBtn = document.getElementById('close-theory-btn');
+      const theoryTabs = document.querySelectorAll('.theory-tab');
+      const theorySections = document.querySelectorAll('.theory-section');
+      
+      theoryBtn.addEventListener('click', function() {
+        theoryModal.style.display = 'block';
+      });
+      
+      closeTheory.addEventListener('click', function() {
+        theoryModal.style.display = 'none';
+      });
+      
+      closeTheoryBtn.addEventListener('click', function() {
+        theoryModal.style.display = 'none';
+      });
+      
+      window.addEventListener('click', function(event) {
+        if (event.target === theoryModal) {
+          theoryModal.style.display = 'none';
+        }
+      });
+      
+      // Tab functionality
+      theoryTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          theoryTabs.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          this.classList.add('active');
+          
+          // Hide all sections
+          theorySections.forEach(section => section.classList.remove('active'));
+          
+          // Show the selected section
+          const sectionId = this.getAttribute('data-section');
+          document.getElementById(sectionId).classList.add('active');
+        });
+      });
+    });
+  </script>
+  
+  <!-- Additional CSS for the Theory Button and Modal -->
+  <style>
+    /* Global Styles */
+    
+    /* Theory Button in Header */
+    
+    #show-theory {
+      background-color: #5e81ac;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    #show-theory:hover {
+      background-color: #4c6f94;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Enhanced Theory Modal Styling */
+    .theory-content {
+      color: black;
+      max-width: 800px;
+      width: 80%;
+      max-height: 85vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #5e81ac #eceff4;
+    }
+    
+    .theory-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .theory-content::-webkit-scrollbar-track {
+      background: #eceff4;
+      border-radius: 4px;
+    }
+    
+    .theory-content::-webkit-scrollbar-thumb {
+      background-color: #5e81ac;
+      border-radius: 4px;
+    }
+    
+    /* Theory Tabs */
+    .theory-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #e5e9f0;
+      padding-bottom: 0.5rem;
+    }
+    
+    .theory-tab {
+      background-color: #eceff4;
+      color: #4c566a;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .theory-tab:hover {
+      background-color: #d8dee9;
+      color: #2e3440;
+    }
+    
+    .theory-tab.active {
+      background-color: #5e81ac;
+      color: white;
+    }
+    
+    /* Theory Sections */
+    .theory-section {
+      display: none;
+      padding: 1rem;
+      background-color: #f8f9fb;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .theory-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .theory-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    
+    .theory-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #5e81ac;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .theory-icon i {
+      font-size: 1.25rem;
+    }
+    
+    .theory-section h3 {
+      margin: 0;
+      color: #2e3440;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+    
+    .theory-section p {
+      color: #434c5e;
+      margin-bottom: 1.25rem;
+    }
+    
+    /* Information Boxes */
+    .info-box {
+      background-color: #e5e9f2;
+      border-left: 4px solid #5e81ac;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .info-header {
+      font-weight: 500;
+      color: #2e3440;
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+    
+    .info-box ol, 
+    .info-box ul {
+      padding-left: 1.5rem;
+      margin: 0.5rem 0;
+    }
+    
+    .info-box li {
+      margin-bottom: 0.75rem;
+      color: #3b4252;
+    }
+    
+    .info-box li strong {
+      color: #2e3440;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    
+    /* Component Grid */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .component {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background-color: #eceff4;
+      border-radius: 4px;
+    }
+    
+    .component-shape {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+    
+    .process-shape {
+      border-radius: 50%;
+      background-color: #88c0d0;
+      border: 2px solid #5e81ac;
+    }
+    
+    .resource-shape {
+      background-color: #ebcb8b;
+      border: 2px solid #d08770;
+    }
+    
+    .component-edge {
+      height: 3px;
+      width: 32px;
+      position: relative;
+    }
+    
+    .component-edge::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -4px;
+      border-left: 8px solid transparent;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    
+    .request-edge {
+      background-color: #5e81ac;
+    }
+    
+    .request-edge::after {
+      border-left: 8px solid #5e81ac;
+    }
+    
+    .allocation-edge {
+      background-color: #bf616a;
+    }
+    
+    .allocation-edge::after {
+      border-left: 8px solid #bf616a;
+    }
+    
+    .component-desc {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .component-desc strong {
+      color: #2e3440;
+      font-size: 0.9rem;
+    }
+    
+    .component-desc span {
+      color: #4c566a;
+      font-size: 0.8rem;
+    }
+    
+    /* Key Concept Box */
+    .key-concept {
+      background-color: #dfe8f8;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .concept-header {
+      color: #2e3440;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    
+    .key-concept p {
+      margin: 0.5rem 0;
+      color: #3b4252;
+    }
+    
+    /* Feature List */
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .feature {
+      background-color: #eceff4;
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #5e81ac;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+    
+    .feature-icon i {
+      font-size: 1.5rem;
+    }
+    
+    .feature-desc strong {
+      color: #2e3440;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-desc p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #4c566a;
+    }
+    
+    /* Example Scenario */
+    .example-scenario {
+      background-color: #e5e9f2;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .example-header {
+      color: #2e3440;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+    
+    /* Visual Elements - Deadlock Illustration */
+    .theory-image {
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .deadlock-illustration {
+      position: relative;
+      width: 260px;
+      height: 260px;
+      display: grid;
+      grid-template-areas:
+        "p1 . r2"
+        ".   . ."
+        "r1 . p2";
+      grid-gap: 1rem;
+    }
+    .deadlock-illustration .process.p1 { grid-area: p1; }
+    .deadlock-illustration .resource.r1 { grid-area: r1; }
+    .deadlock-illustration .process.p2 { grid-area: p2; }
+    .deadlock-illustration .resource.r2 { grid-area: r2; }
+    .deadlock-illustration .arrow {
+      position: absolute;
+      width: 2px;
+      background-color: #5e81ac;
+    }
+    .deadlock-illustration .arrow.a1 { top: 0; left: 130px; height: 100px; transform: rotate(90deg); }
+    .deadlock-illustration .arrow.a2 { top: 130px; left: 260px; height: 100px; transform: rotate(180deg); }
+    .deadlock-illustration .arrow.a3 { top: 260px; left: 130px; height: 100px; transform: rotate(270deg); }
+    .deadlock-illustration .arrow.a4 { top: 130px; left: 0; height: 100px; transform: rotate(0deg); }
+  </style>
 </body>
-
-</html>
