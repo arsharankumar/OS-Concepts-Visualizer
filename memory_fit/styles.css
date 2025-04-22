@@ -1,9 +1,34 @@
-button{
-    margin-top:-10px;
+button {
+    margin-top: -10px;
     margin-bottom: 25px;
-
+    background-color: #78c0ff; /* Soft blue */
+    color: #0b0606; /* Dark text on button */
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-.btn-align{
+
+.btn-primary {
+    background-color: #00bcd4 !important; /* bright cyan */
+    color: white !important;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0097a7 !important; /* darker cyan on hover */
+}
+
+button:hover {
+    background-color: #58a6e0;
+}
+
+
+.btn-align {
     text-align: center;
 }
 
@@ -11,33 +36,55 @@ button{
     margin-left: 1%;
     margin-right: 1%;
     margin-top: 5%;
-    background-color: rgb(13, 12, 13);
+    background-color: #3c3c3c; /* Dark gray background */
     padding-bottom: 10px;
     padding-top: 20px;
+    border-radius: 10px;
 }
-/* 54,49,60 */
 
 .display-4 {
-    color: white;
+    color: #78c0ff; /* Light blue heading */
     text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .my-4 {
-    border-color: white;
+    border-color: #78c0ff; /* Light blue border */
 }
 
 .lead {
-    color: white;
+    color: #dcdcdc; /* Light gray text */
+    text-align: center;
 }
 
-body:before{
-    content:"";
-	position:fixed;
-	left:0;
-	top:0;
-	right:0;
-	bottom:0;
-	z-index:-1; 
-    background-color: rgb(20, 18, 23); 
-    /* linear-gradient(to bottom, rgba(57, 23, 194, 1), rgba(146, 25, 156, 1)); */
+body:before {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background-color: #0b0606; /* Dark background */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+}
+
+input[type="text"],
+input[type="number"] {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #78c0ff;
+    border-radius: 6px;
+    padding: 8px;
+    outline: none;
+}
+
+input::placeholder {
+    color: #aaa;
 }
