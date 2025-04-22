@@ -15,43 +15,111 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-    <style>
-        .inputs-container{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-top: 3rem;
-        }
-        #hole_count{
-            outline: none;
-            margin-top: 1rem;
-        }
-
-        .hole-inputs{
-            margin-top: 0.7rem;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .hole-sizes{
-            display: inline-block;
-            width: fit-content;
-        }
-        #mem-req-size{
-            outline: none;
-            margin-top: 0.7rem;
-        }
-        .results{
-            text-align: center;
-            margin-top: 2rem;
-        }
-    </style>
+        <style>
+            body {
+                background-color: #0b0606;
+                color: #f5f5f5;
+                font-family: 'Poppins', sans-serif;
+            }
+    
+            .jumbotron {
+                margin: 5% 2%;
+                background-color: #2e2e2e;
+                border-radius: 10px;
+                padding: 30px 20px;
+            }
+    
+            h2, h3 {
+                text-align: center;
+                color: #78c0ff;
+                margin-bottom: 20px;
+            }
+    
+            h2 {
+                text-decoration: none !important;
+                font-weight: 600;
+            }
+    
+            h3 {
+                font-weight: 500;
+            }
+    
+            .inputs-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-top: 2rem;
+            }
+    
+            input[type="number"] {
+                background-color: transparent;
+                color: #ffffff;
+                border: 1px solid #78c0ff;
+                border-radius: 6px;
+                padding: 8px 12px;
+                margin: 8px 0;
+                width: 250px;
+                outline: none;
+            }
+    
+            input::placeholder {
+                color: #aaa;
+            }
+    
+            .hole-inputs {
+                margin-top: 0.7rem;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+            }
+    
+            button {
+                background-color: #78c0ff;
+                color: #0b0606;
+                font-weight: bold;
+                border: none;
+                border-radius: 6px;
+                padding: 10px 20px;
+                margin-top: 1rem;
+                transition: background-color 0.3s ease;
+            }
+    
+            button:hover {
+                background-color: #58a6e0;
+            }
+    
+            .progress-bar-container {
+                width: 100%;
+                max-width: 600px;
+            }
+    
+            meter {
+                width: 100%;
+                height: 20px;
+            }
+    
+            label {
+                color: #ffffff;
+                margin-top: 10px;
+            }
+    
+            .results {
+                text-align: center;
+                margin-top: 2rem;
+                color: #ffffff;
+            }
+    
+            .results p {
+                margin: 5px 0;
+            }
+        </style>
 </head>
 <body>
     <div class="jumbotron", style="color:white">
-    <h2 class="mt-5 text-decoration-underline", style="text-align: center;">First Fit Simulator</h2>
+        <h2 class="mt-3">First Fit Simulator</h2>
     <div class="inputs-container">
         <h3>Enter the values here</h3>
         <input type="number" name="hole_count" id="hole_count" placeholder="Enter number of holes"/>
